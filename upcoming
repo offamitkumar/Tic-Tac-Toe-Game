@@ -1,0 +1,10 @@
+1) ask user when he choose to play game whether he want to know manual or not this should remain for 5 seconds 
+2) input name of the players 
+3) if game played continuously then tell how many games player(1) and player(2) won;
+    3.a.) print total game played
+    3.b.) print winnings of player 1
+    3.c.) print winnings of player 2
+    3.d.) print game loose of player 1
+    3.e.) print game loose of player 2
+4) Implement N X N grid [ N <= 20 ]
+5) Ask user after playing whether he wants to play again / exit / want to go to main menu 

@@ -1,26 +1,131 @@
 #include <iostream>
+#include <iomanip>
 /* macros */
 #define MAX_WRONG_CHOICE 5
+#define GRID_SIZE 3
+#define HORIZONTAL_DISPLAY_CONSTANT 8  // used in printing the grid 
+#define VERTICAL_DISPLAY_CONSTANT 5 
+#define VERTICAL_GAP 5
+#define HORIZONTAL_GAP 5
+
+
+/* Variables */
+
+enum state{ EMPTY , OCCUPIED };
+
+state grid[3][3];
 
 
 /* functions Used */
 
-void clearSystem     ( void ) ;
-void welcomeMessage  ( void ) ;
-void printWarning    ( int  ) ;
-void welcomeUtility  ( void ) ;
-void goodByeMessage  ( void ) ;
+inline void clearSystem     ( void ) ;
+inline void startGame       ( void ) ;
+inline void developerInfo   ( void ) ;
+inline void printWarning    ( int  ) ;
+inline void welcomeUtility  ( void ) ;
+inline void goodByeMessage  ( void ) ;
+inline void play            ( void ) ;
+inline void setGridValues   ( void ) ;
+inline void printTheGrid    ( void ) ;
+
+
+/* function to be added in future */
+void setGridSize     ( int  ) ;
+void printGrid       ( void ) ;
+void printResult     ( void ) ;
 
 
 int main(int argc , char *argv[]){
 
     clearSystem(); // clear the screen 
 
-    welcomeMessage(); 
+    startGame(); 
+
+    goodByeMessage();
 
     return 0;
 } 
 
+
+
+void setGridValues( void ) {
+
+    for( int row = 0; row < GRID_SIZE; ++row ) {
+        for( int col = 0; col < GRID_SIZE; ++col ) {
+            grid[ row ] [ col ] = state::EMPTY;  // at present none player play a move 
+        }
+    }
+}
+
+
+void play( void ) {
+
+    setGridValues( );
+
+    printTheGrid( ); 
+
+
+}
+
+
+void printTheGrid( void ) {
+
+    clearSystem();
+
+    std:: cout << '\n'; 
+    for( int j = 0; j <  GRID_SIZE ; ++j ) {
+        std::cout<<"\t\t\t\t\t\t";
+        for(int i = 0; i < HORIZONTAL_DISPLAY_CONSTANT * GRID_SIZE ; ++i ) {
+            std::cout<<'#';
+        }
+        std::cout << '#';
+        std::cout << '\n' ;
+
+        for(int i = 0; i < VERTICAL_GAP ; ++i) {
+            std::cout<<"\t\t\t\t\t\t";
+            std::cout<<'#';
+
+            for( int k = 0; k < 3; ++k ) {
+
+
+                if( i == 2 and  grid[ i ][ k ] == state::OCCUPIED ) {
+
+                    std::cout << std::setfill(' ') << std::setw(4) << 'O' << std::setfill(' ') << std::setw(4);
+
+                }else if(i == 2 and grid[ i ][ k ] == state::EMPTY ) {
+
+                    std::cout << std::setfill(' ') << std::setw(4) << 'X' << std::setfill(' ') << std::setw(4);
+
+                }else{
+                    std::cout << std::setfill(' ') << std::setw(8) ;
+                }
+
+                std::cout << '#';
+
+            }
+            std::cout << '\n' ;
+        }
+
+    }
+
+    std::cout<<"\t\t\t\t\t\t";
+    for(int i = 0; i < HORIZONTAL_DISPLAY_CONSTANT * GRID_SIZE ; ++i ) {
+        std::cout<<'#';
+    }
+    std::cout<<'#'<<'\n';
+
+}
+
+
+
+void developerInfo( void ) {
+
+    clearSystem();
+    std::cout << "\t\t\t\t This information will be added Soon!!\n  " << '\n' ;
+    std::cout << "\n\t\t\t\t For any Bug please mail : offamitkumar@gmail.com \n\n";
+
+    return ;
+}
 
 
 void clearSystem( void ) {
@@ -93,7 +198,7 @@ void welcomeUtility ( void ) {
     return ;
 }
 
-void welcomeMessage( void ) {
+void startGame( void ) {
 
     welcomeUtility ( ); 
 
@@ -112,7 +217,7 @@ void welcomeMessage( void ) {
         switch( userInput ) {
 
             case 1: 
-                // play ( )
+                play( );
                 wrongChoice = 0;
 
                 break;
@@ -126,25 +231,22 @@ void welcomeMessage( void ) {
 
             case 3:
 
-                // Developer Info
+                developerInfo();
                 wrongChoice = 0;
 
                 break;
 
             case 4:
-
                 return ;
 
             default:
                 isWrongChoice = true;
-    //            std::cout<<" Incorrect Type/Choice !! ";
         }
 
         wrongChoice += isWrongChoice;
 
         if( wrongChoice == MAX_WRONG_CHOICE ) {
-            goodByeMessage();
-            exit(0);
+            return ;
         }
 
         if(isWrongChoice == true){
