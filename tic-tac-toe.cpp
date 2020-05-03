@@ -1,5 +1,9 @@
 #include <iostream>
+#include <utility>
+#include <set>
 #include <iomanip>
+//using namespace std;
+
 /* macros */
 #define MAX_WRONG_CHOICE 5
 #define GRID_SIZE 3
@@ -11,22 +15,27 @@
 
 /* Variables */
 
-enum state{ EMPTY , OCCUPIED };
+enum state{ EMPTY , OCCUPIED_PLAYER_ONE , OCCUPIED_PLAYER_TWO };
+enum turn{ playerOne , playerTwo };
 
 state grid[3][3];
+bool gameOver = false;
 
 
 /* functions Used */
 
-inline void clearSystem     ( void ) ;
-inline void startGame       ( void ) ;
-inline void developerInfo   ( void ) ;
-inline void printWarning    ( int  ) ;
-inline void welcomeUtility  ( void ) ;
-inline void goodByeMessage  ( void ) ;
-inline void play            ( void ) ;
-inline void setGridValues   ( void ) ;
-inline void printTheGrid    ( void ) ;
+inline void                  clearSystem         ( void ) ;
+inline void                  startGame           ( void ) ;
+inline void                  developerInfo       ( void ) ;
+inline void                  printWarning        ( int  ) ;
+inline void                  welcomeUtility      ( void ) ;
+inline void                  goodByeMessage      ( void ) ;
+inline void                  play                ( void ) ;
+inline void                  setGridValues       ( void ) ;
+inline void                  printTheGrid        ( void ) ;
+inline bool                  isValid             ( int  ) ;
+inline void                  setGrid             ( void ) ;
+inline std::pair<int,int>    getGridLocation     ( int  ) ;
 
 
 /* function to be added in future */
@@ -57,13 +66,125 @@ void setGridValues( void ) {
     }
 }
 
+std::pair<int,int> getGridLocation( int Input ) {
+
+    switch( Input ) {
+
+        case 1:
+            return std::make_pair(0,0);
+            break;
+        case 2:
+            return std::make_pair(0,1);
+            break;
+        case 3:
+            return std::make_pair(0,2);
+            break;
+        case 4:
+            return std::make_pair(1,0);
+            break;
+        case 5:
+            return std::make_pair(1,1);
+            break;
+        case 6:
+            return std::make_pair(1,2);
+            break;
+        case 7:
+            return std::make_pair(2,0);
+            break;
+        case 8:
+            return std::make_pair(2,1);
+            break;
+        case 9:
+            return std::make_pair(2,2);
+            break;
+
+    }
+
+    static_assert("Error !!\n");
+    exit(0);
+
+}
+
+void setGrid( int Location , turn Turn) {
+
+    std::pair<int , int > gridLocation = getGridLocation(Location);
+
+    if(Turn == turn::playerOne){
+
+        grid[ gridLocation.first ] [ gridLocation.second ] = OCCUPIED_PLAYER_ONE;
+
+    }else{
+
+        grid[ gridLocation.first ] [ gridLocation.second ] = OCCUPIED_PLAYER_TWO;
+
+    }
+
+    return ;
+}
+
+bool isValid( int location ) {
+
+    if(location <= 0 || location > 9){
+        return false;
+    }
+
+    return true;
+}
+
 
 void play( void ) {
 
+    gameOver = false;
+
     setGridValues( );
 
-    printTheGrid( ); 
+    turn Turn = turn::playerOne;
 
+    int occupyGrid;
+
+    while(gameOver == false){
+
+        printTheGrid( ); 
+
+        if(Turn == turn::playerOne){
+            std::cout<<"Player 1 Turn: ";
+
+            std::cin>>occupyGrid;
+            
+            if(occupyGrid == 0){
+                exit(0);
+            }
+
+            if(isValid(occupyGrid) == false){
+                continue;
+            }
+
+
+            setGrid(occupyGrid , Turn);
+
+            Turn = turn::playerTwo;
+
+        }else{
+            std::cout<<"Player 2 Turn: ";
+
+            std::cin>>occupyGrid;
+
+            if(occupyGrid == 0){
+                exit(0);
+            }
+
+            if(isValid(occupyGrid) == false){
+                continue;
+            }
+
+
+            setGrid(occupyGrid , Turn);
+
+            Turn = turn::playerOne;
+
+        }
+
+    }
 
 }
 
@@ -73,6 +194,7 @@ void printTheGrid( void ) {
     clearSystem();
 
     std:: cout << '\n'; 
+    std::set<std::pair<int,int>>occupied;
     for( int j = 0; j <  GRID_SIZE ; ++j ) {
         std::cout<<"\t\t\t\t\t\t";
         for(int i = 0; i < HORIZONTAL_DISPLAY_CONSTANT * GRID_SIZE ; ++i ) {
@@ -81,18 +203,44 @@ void printTheGrid( void ) {
         std::cout << '#';
         std::cout << '\n' ;
 
+
         for(int i = 0; i < VERTICAL_GAP ; ++i) {
             std::cout<<"\t\t\t\t\t\t";
             std::cout<<'#';
 
             for( int k = 0; k < 3; ++k ) {
 
+                bool printed = false;
+                if(i==2){
+                    for(int x=0;x < 3; ++x){
+                        if(occupied.find(std::make_pair(j,k))==occupied.end() && grid[j][k] == state::OCCUPIED_PLAYER_ONE){
+                            occupied.insert(std::make_pair(j,k));
+                            std::cout << std::setfill(' ') << std::setw(4) << 'O' << std::setfill(' ') << std::setw(4);
+                            printed = true;
+                            break;
+                        }
+                        if(occupied.find(std::make_pair(j,k))==occupied.end() && grid[j][k] == state::OCCUPIED_PLAYER_TWO){
+                            occupied.insert(std::make_pair(j,k));
+                            std::cout << std::setfill(' ') << std::setw(4) << 'T' << std::setfill(' ') << std::setw(4);
+                            printed = true;
+                            break;
+                        }
+                    }
+                }
 
-                if( i == 2 and  grid[ i ][ k ] == state::OCCUPIED ) {
+                if(printed == true){
+                    std::cout << '#';
+                    continue;
+                }
+                if(i == 2 and grid[ j ][ k ] == state::OCCUPIED_PLAYER_ONE ) {
+                    
+                    std::cout << std::setfill(' ') << std::setw(4) << 'A' << std::setfill(' ') << std::setw(4);
 
-                    std::cout << std::setfill(' ') << std::setw(4) << 'O' << std::setfill(' ') << std::setw(4);
+                }else if(i==2 and grid[ j ][ k ] == state::OCCUPIED_PLAYER_TWO){
+                    
+                    std::cout << std::setfill(' ') << std::setw(4) << 'C' << std::setfill(' ') << std::setw(4);
 
-                }else if(i == 2 and grid[ i ][ k ] == state::EMPTY ) {
+                }else if(i == 2 and grid[ j ][ k ] == state::EMPTY ) {
 
                     std::cout << std::setfill(' ') << std::setw(4) << 'X' << std::setfill(' ') << std::setw(4);
 
