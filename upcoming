@@ -8,3 +8,5 @@
     3.e.) print game loose of player 2
 4) Implement N X N grid [ N <= 20 ]
 5) Ask user after playing whether he wants to play again / exit / want to go to main menu 
+6) Manage wrong input at the game play time. 
+7) Grid already Occupied feature
