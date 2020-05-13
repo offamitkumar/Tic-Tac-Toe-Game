@@ -19,6 +19,7 @@
 enum state{ EMPTY , OCCUPIED_PLAYER_ONE , OCCUPIED_PLAYER_TWO };
 enum turn{ playerOne , playerTwo };
 enum gameResult{ PLAYER_ONE , PLAYER_TWO  , TIE };
+std::string USER_ONE , USER_TWO;
 
 state grid[3][3];
 gameResult result;
@@ -212,10 +213,10 @@ skip:
 void printResult( void ) {
 
     if( result == gameResult::PLAYER_ONE ) {
-        std::cout << " Player 1 is Winner !!" << '\n';
+        std::cout << USER_ONE << " is Winner !!" << '\n';
     }else if(result == gameResult::PLAYER_TWO){
-        std::cout << " Player 2 is Winner !!" << '\n';
-    }else{
+        std::cout << USER_TWO << " is Winner !!" << '\n'; } 
+    else{
         std::cout << " TIE !! " << '\n' ; 
     }
 
@@ -230,6 +231,14 @@ void play( void ) {
     turn Turn = turn::playerOne;
 
     int occupyGrid;
+
+
+    std::cout << "Enter Player 1 Name: ";
+    std::cin.ignore();
+    std::getline(std::cin , USER_ONE);
+
+    std::cout << "Enter Player 2 Name: ";
+    std::getline(std::cin , USER_TWO );
 
     while(gameOver == false){
 

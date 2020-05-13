@@ -2,7 +2,6 @@
 UPCOMING 
 
 1) ask user when he choose to play game whether he want to know manual or not this should remain for 5 seconds 
-2) input name of the players 
 3) if game played continuously then tell how many games player(1) and player(2) won;
     3.a.) print total game played
     3.b.) print winnings of player 1
@@ -13,6 +12,7 @@ UPCOMING
 8) Suggestion ( might implemented )
 9) if user press wrong input more then X time then show him quit() option     
 10) show user on which grid connecting he win the game 
+11) Use first character of username to show his occupied grid
 
 
 
@@ -21,6 +21,7 @@ UPCOMING
 
 UPDATED 
 
+2) input name of the players 
 5 ) implement tie function  :::: IMPLEMENTED
 6 ) Ask user after playing whether he wants to play again / exit / want to go to main menu :::: IMPLEMENTED
 7 ) Manage wrong input at the game play time. :::: IMPLEMENTED
