@@ -2,8 +2,6 @@
 #include <utility>
 #include <set>
 #include <iomanip>
-
-//using namespace std;
 /* macros */
 #define MAX_WRONG_CHOICE 5
 #define GRID_SIZE 3
