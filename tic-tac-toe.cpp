@@ -4,7 +4,6 @@
 #include <iomanip>
 
 //using namespace std;
-
 /* macros */
 #define MAX_WRONG_CHOICE 5
 #define GRID_SIZE 3
@@ -13,14 +12,11 @@
 #define VERTICAL_GAP 5
 #define HORIZONTAL_GAP 5
 
-
 /* Variables */
-
 enum state{ EMPTY , OCCUPIED_PLAYER_ONE , OCCUPIED_PLAYER_TWO };
 enum turn{ playerOne , playerTwo };
 enum gameResult{ PLAYER_ONE , PLAYER_TWO  , TIE };
 std::string USER_ONE , USER_TWO;
-
 state grid[3][3];
 gameResult result;
 bool gameOver = false;
@@ -28,7 +24,6 @@ bool nonFreeGridError = false; // prevent players to occupy each other's selecte
 bool nonValidGridLocation = false; // check validity of location 
 
 /* functions Used */
-
 inline void                  clearSystem         ( void ) ;
 inline void                  startGame           ( void ) ;
 inline void                  developerInfo       ( void ) ;
@@ -50,7 +45,6 @@ void setGridSize     ( int  ) ;
 void printGrid       ( void ) ;
 void printResult     ( void ) ;
 
-
 int main(int argc , char *argv[]){
 
     clearSystem(); // clear the screen 
@@ -62,8 +56,6 @@ int main(int argc , char *argv[]){
     return 0;
 } 
 
-
-
 void setGridValues( void ) {
 
     for( int row = 0; row < GRID_SIZE; ++row ) {
@@ -74,9 +66,7 @@ void setGridValues( void ) {
 }
 
 std::pair<int,int> getGridLocation( int Input ) {
-
     switch( Input ) {
-
         case 1:
             return std::make_pair(0,0);
             break;
@@ -104,48 +94,35 @@ std::pair<int,int> getGridLocation( int Input ) {
         case 9:
             return std::make_pair(2,2);
             break;
-
     }
-
     static_assert("Error !!\n");
     exit(0);
-
 }
 
 void setGrid( int Location , turn Turn) {
-
     std::pair<int , int > gridLocation = getGridLocation(Location);
     if(grid[ gridLocation.first ][ gridLocation.second ] == state::EMPTY){
         if(Turn == turn::playerOne ){
-
             grid[ gridLocation.first ] [ gridLocation.second ] = OCCUPIED_PLAYER_ONE;
-
         }else{
-
             grid[ gridLocation.first ] [ gridLocation.second ] = OCCUPIED_PLAYER_TWO;
-
         }
     }else{ 
         nonFreeGridError = true;
     }
-
     return ;
 }
 
 bool isValid( int location ) {
-
     if(location <= 0 || location > 9){
         nonValidGridLocation = true;
         return false;
     }
-
     return true;
 }
 
 bool isGameOver( void ){
-
     bool gridIsEmpty = true;
-    
     for(int row = 0; row < GRID_SIZE; ++row){
         for( int col = 0; col < GRID_SIZE; ++col ) {
             if( grid[row][col] != state::EMPTY ){
@@ -154,50 +131,39 @@ bool isGameOver( void ){
         }
     }
     return false;
-
 skip:
-
     if(grid[0][0] != state::EMPTY && grid[0][0] == grid[0][1]  && grid[0][0] == grid[0][2]){
         result = ( grid[0][0] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[1][0] != state::EMPTY && grid[1][0] == grid[1][1]  && grid[1][0] == grid[1][2]){
         result = ( grid[1][0] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[2][0] != state::EMPTY && grid[2][0] == grid[2][1]  && grid[2][0] == grid[2][2]){
         result = ( grid[2][0] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[0][0] != state::EMPTY && grid[0][0] == grid[1][0]  && grid[0][0] == grid[2][0]){
         result = ( grid[0][0] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[1][1] != state::EMPTY && grid[0][1] == grid[1][1]  && grid[0][1] == grid[2][1]){
         result = ( grid[0][1] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[0][2] != state::EMPTY && grid[0][2] == grid[1][2]  && grid[0][2] == grid[2][2]){
         result = ( grid[0][2] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[0][0] != state::EMPTY && grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2]) {
         result = ( grid[0][0] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
     if(grid[0][2] != state::EMPTY && grid[0][2] == grid[1][1] && grid[0][2] == grid[2][0]) {
         result = ( grid[0][2] == state::OCCUPIED_PLAYER_ONE )? gameResult::PLAYER_ONE : gameResult::PLAYER_TWO;
         return true;
     }
-
-
     // what if all grid are occupied but none of the player is winner 
     for(int row = 0; row < GRID_SIZE; ++row){
         for( int col = 0; col < GRID_SIZE; ++col ) {
@@ -211,7 +177,6 @@ skip:
 }
 
 void printResult( void ) {
-
     if( result == gameResult::PLAYER_ONE ) {
         std::cout << USER_ONE << " is Winner !!" << '\n';
     }else if(result == gameResult::PLAYER_TWO){
@@ -219,105 +184,67 @@ void printResult( void ) {
     else{
         std::cout << " TIE !! " << '\n' ; 
     }
-
 }
 
 void play( void ) {
-
     gameOver = false;
-
     setGridValues( );
-
     turn Turn = turn::playerOne;
-
     int occupyGrid;
-
-
     std::cout << "Enter Player 1 Name: ";
     std::cin.ignore();
     std::getline(std::cin , USER_ONE);
-
     std::cout << "Enter Player 2 Name: ";
     std::getline(std::cin , USER_TWO );
-
     while(gameOver == false){
-
         printTheGrid( ); 
-
         if(nonValidGridLocation == true){
             std::cout<<"\nError: Please Enter a Valid Location between 1 to 9 ( inclusive ) !"<<'\n';
             nonValidGridLocation = false;
         }
-
-        
         if(nonFreeGridError == true){
             std::cout<<"\nError: Please Enter a Valid Location , Current location is already Occupied!"<<'\n';
             nonFreeGridError = false;
         }
-
         if( isGameOver() ){ // if game is over , return; 
             gameOver = true;
-
             printResult();
-
             return; 
         }
-
         if(Turn == turn::playerOne){
             std::cout<<"Player 1 Turn: ";
-
             std::cin>>occupyGrid;
-            
             if(occupyGrid == 0){
                 exit(0);
             }
-
             if(isValid(occupyGrid) == false){
                 continue;
             }
-
-
             setGrid(occupyGrid , Turn);
-
             if(nonFreeGridError == true){
                 continue;
             }
-
             Turn = turn::playerTwo;
-
         }else{
             std::cout<<"Player 2 Turn: ";
-
             std::cin>>occupyGrid;
-
             if(occupyGrid == 0){
                 exit(0);
             }
-
             if(isValid(occupyGrid) == false){
                 continue;
             }
-
-
             setGrid(occupyGrid , Turn);
-            
             if(nonFreeGridError == true){
                 continue;
             }
-
             Turn = turn::playerOne;
-
         }
-
     }
-
 }
 
-
 void printTheGrid( void ) {
-
     clearSystem();
-
     std:: cout << '\n'; 
     std::set<std::pair<int,int>>occupied;
     for( int j = 0; j <  GRID_SIZE ; ++j ) {
@@ -327,14 +254,10 @@ void printTheGrid( void ) {
         }
         std::cout << '#';
         std::cout << '\n' ;
-
-
         for(int i = 0; i < VERTICAL_GAP ; ++i) {
             std::cout<<"\t\t\t\t\t\t";
             std::cout<<'#';
-
             for( int k = 0; k < 3; ++k ) {
-
                 bool printed = false;
                 if(i==2){
                     for(int x=0;x < 3; ++x){
@@ -352,33 +275,23 @@ void printTheGrid( void ) {
                         }
                     }
                 }
-
                 if(printed == true){
                     std::cout << '#';
                     continue;
                 }
                 if(i == 2 and grid[ j ][ k ] == state::OCCUPIED_PLAYER_ONE ) {
-                    
                     std::cout << std::setfill(' ') << std::setw(4) << 'A' << std::setfill(' ') << std::setw(4);
-
                 }else if(i==2 and grid[ j ][ k ] == state::OCCUPIED_PLAYER_TWO){
-                    
                     std::cout << std::setfill(' ') << std::setw(4) << 'C' << std::setfill(' ') << std::setw(4);
-
                 }else if(i == 2 and grid[ j ][ k ] == state::EMPTY ) {
-
                     std::cout << std::setfill(' ') << std::setw(4) << 'X' << std::setfill(' ') << std::setw(4);
-
                 }else{
                     std::cout << std::setfill(' ') << std::setw(8) ;
                 }
-
                 std::cout << '#';
-
             }
             std::cout << '\n' ;
         }
-
     }
 
     std::cout<<"\t\t\t\t\t\t";
@@ -386,59 +299,35 @@ void printTheGrid( void ) {
         std::cout<<'#';
     }
     std::cout<<'#'<<'\n';
-
 }
-
-
-
 void developerInfo( void ) {
-
     clearSystem();
     std::cout << "\t\t\t\t This information will be added Soon!!\n  " << '\n' ;
     std::cout << "\n\t\t\t\t For any Bug please mail : offamitkumar@gmail.com \n\n";
-
     return ;
 }
-
-
 void clearSystem( void ) {
-
     // for Linux & Mac 
     system("clear");
-
     // for Windows comment the above line and uncomment the line below
     // system("cls");
-
     return ;
 }
-
 void printWarning ( int warningNumber ) {
-    
     static int isFirstMistake = 0; 
     clearSystem();
     welcomeUtility();
     if(++isFirstMistake == 1){
-
         std::cout << "Oops!! You made a Incorrect Choice !!" ;
-
     }else{
-
         std::cout << "Oops!! You made a Incorrect Choice again !!";
-
     }
-    
     std::cout << '\n' << '\n' ;
-
     std::cout<<"Warning : You have only " << warningNumber << " choices remaining.\n\n"; 
-
     return ;
-
 }
-
 void goodByeMessage ( void ) {
-
     clearSystem();
-
     std::cout<<R"(
 
 
@@ -450,9 +339,7 @@ void goodByeMessage ( void ) {
                                                                
                                                                
     )"<< '\n' ;
-
 }
-
 void welcomeUtility ( void ) {
     std::cout<<R"(  
         
@@ -467,69 +354,44 @@ void welcomeUtility ( void ) {
                                                                        4 ) Exit 
                  
         )"<<'\n';
-
     return ;
 }
-
 void startGame( void ) {
-
     welcomeUtility ( ); 
-
     int userInput , wrongChoice{};
     bool isWrongChoice = false; 
     bool isGamePlayed = false;
-    
     while ( wrongChoice < MAX_WRONG_CHOICE ) {
-
         std::cout << "Enter Your Choice: ";
-
         std::cin >> userInput;
         isWrongChoice = false;
-
         // for any correct choice we will set the total wrong choice made till now to 0 :)
-
         switch( userInput ) {
-
             case 1: 
                 play( );
                 wrongChoice = 0;
                 isGamePlayed = true;
                 break;
-
             case 2:
-
                 // Manual ( ) 
                 wrongChoice = 0;
-
                 break;
-
             case 3:
-
                 developerInfo();
                 wrongChoice = 0;
-
                 break;
-
             case 4:
                 return ;
-
             default:
                 isWrongChoice = true;
         }
-
-
         wrongChoice += isWrongChoice;
-
         if( wrongChoice == MAX_WRONG_CHOICE ) {
             return ;
         }
-
         if(isWrongChoice == true){
-
             printWarning( MAX_WRONG_CHOICE - wrongChoice );
-
         }
-
         if(isGamePlayed == true){
             isGamePlayed = false;
             char Continue;
@@ -552,6 +414,5 @@ void startGame( void ) {
             }
         }
     }
-
     return;
 }
