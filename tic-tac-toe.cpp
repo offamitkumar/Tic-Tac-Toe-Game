@@ -15,6 +15,7 @@ enum state{ EMPTY , OCCUPIED_PLAYER_ONE , OCCUPIED_PLAYER_TWO };
 enum turn{ playerOne , playerTwo };
 enum gameResult{ PLAYER_ONE , PLAYER_TWO  , TIE };
 std::string USER_ONE , USER_TWO;
+std::string occupiedBy; 
 state grid[3][3];
 gameResult result;
 char defaultFillingChar = 'X' , userOneFillingChar='O', userTwoFillingChar='T'; 
@@ -108,6 +109,11 @@ void setGrid( int Location , turn Turn) {
             grid[ gridLocation.first ] [ gridLocation.second ] = OCCUPIED_PLAYER_TWO;
         }
     }else{ 
+        if ( grid[gridLocation.first][gridLocation.second] == OCCUPIED_PLAYER_ONE) {
+            occupiedBy = USER_ONE; 
+        } else {
+            occupiedBy = USER_TWO; 
+        }
         nonFreeGridError = true;
     }
     return ;
@@ -207,7 +213,7 @@ void play( void ) {
             nonValidGridLocation = false;
         }
         if(nonFreeGridError == true){
-            std::cout<<"\nError: Please Enter a Valid Location , Current location is already Occupied!"<<'\n';
+            std::cout<<"\nError: Please Enter a Valid Location , Current location is already Occupied by " << occupiedBy << "! "<<'\n';
             nonFreeGridError = false;
         }
         if( isGameOver() ){ // if game is over , return; 
