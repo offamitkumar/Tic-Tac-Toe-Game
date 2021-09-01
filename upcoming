@@ -12,7 +12,6 @@ UPCOMING
 8) Suggestion ( might implemented )
 9) if user press wrong input more then X time then show him quit() option     
 10) show user on which grid connecting he win the game 
-11) Use first character of username to show his occupied grid
 
 
 
@@ -26,3 +25,4 @@ UPDATED
 6 ) Ask user after playing whether he wants to play again / exit / want to go to main menu :::: IMPLEMENTED
 7 ) Manage wrong input at the game play time. :::: IMPLEMENTED
 11 ) Grid already Occupied feature :::: IMPLEMENTED
+12) Use first character of username to show his occupied grid :::: IMPLEMENTED
