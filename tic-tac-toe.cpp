@@ -17,6 +17,7 @@ enum gameResult{ PLAYER_ONE , PLAYER_TWO  , TIE };
 std::string USER_ONE , USER_TWO;
 state grid[3][3];
 gameResult result;
+char defaultFillingChar = 'X' , userOneFillingChar='O', userTwoFillingChar='T'; 
 bool gameOver = false;
 bool nonFreeGridError = false; // prevent players to occupy each other's selected location 
 bool nonValidGridLocation = false; // check validity of location 
@@ -36,6 +37,7 @@ inline void                  setGrid             ( void ) ;
 inline std::pair<int,int>    getGridLocation     ( int  ) ;
 inline bool                  isGameOver          ( void ) ;
 inline void                  printResult         ( void ) ;
+inline bool                  perfectName         ( void ) ;
 
 
 /* function to be added in future */
@@ -194,6 +196,10 @@ void play( void ) {
     std::getline(std::cin , USER_ONE);
     std::cout << "Enter Player 2 Name: ";
     std::getline(std::cin , USER_TWO );
+    if (perfectName()) {
+        userOneFillingChar = USER_ONE[0]; 
+        userTwoFillingChar = USER_TWO[0];
+    } 
     while(gameOver == false){
         printTheGrid( ); 
         if(nonValidGridLocation == true){
@@ -261,13 +267,13 @@ void printTheGrid( void ) {
                     for(int x=0;x < 3; ++x){
                         if(occupied.find(std::make_pair(j,k))==occupied.end() && grid[j][k] == state::OCCUPIED_PLAYER_ONE){
                             occupied.insert(std::make_pair(j,k));
-                            std::cout << std::setfill(' ') << std::setw(4) << 'O' << std::setfill(' ') << std::setw(4);
+                            std::cout << std::setfill(' ') << std::setw(4) << userOneFillingChar << std::setfill(' ') << std::setw(4);
                             printed = true;
                             break;
                         }
                         if(occupied.find(std::make_pair(j,k))==occupied.end() && grid[j][k] == state::OCCUPIED_PLAYER_TWO){
                             occupied.insert(std::make_pair(j,k));
-                            std::cout << std::setfill(' ') << std::setw(4) << 'T' << std::setfill(' ') << std::setw(4);
+                            std::cout << std::setfill(' ') << std::setw(4) << userTwoFillingChar << std::setfill(' ') << std::setw(4);
                             printed = true;
                             break;
                         }
@@ -282,7 +288,7 @@ void printTheGrid( void ) {
                 }else if(i==2 and grid[ j ][ k ] == state::OCCUPIED_PLAYER_TWO){
                     std::cout << std::setfill(' ') << std::setw(4) << 'C' << std::setfill(' ') << std::setw(4);
                 }else if(i == 2 and grid[ j ][ k ] == state::EMPTY ) {
-                    std::cout << std::setfill(' ') << std::setw(4) << 'X' << std::setfill(' ') << std::setw(4);
+                    std::cout << std::setfill(' ') << std::setw(4) << defaultFillingChar << std::setfill(' ') << std::setw(4);
                 }else{
                     std::cout << std::setfill(' ') << std::setw(8) ;
                 }
@@ -413,4 +419,7 @@ void startGame( void ) {
         }
     }
     return;
+}
+bool perfectName ( void ) {
+    return USER_ONE[0] != USER_TWO[0]; 
 }
