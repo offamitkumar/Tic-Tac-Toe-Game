@@ -24,5 +24,6 @@ UPDATED
 5 ) implement tie function  :::: IMPLEMENTED
 6 ) Ask user after playing whether he wants to play again / exit / want to go to main menu :::: IMPLEMENTED
 7 ) Manage wrong input at the game play time. :::: IMPLEMENTED
-11 ) Grid already Occupied feature :::: IMPLEMENTED
+11) Grid already Occupied feature :::: IMPLEMENTED
 12) Use first character of username to show his occupied grid :::: IMPLEMENTED
+13) Shows the player by whom the specific grid is occupied if he retry to occupy it :::: IMPLEMENTED
